@@ -1,0 +1,20 @@
+# Core Django + WebSockets
+Django==4.2.16
+channels==4.0.0
+asgiref==3.6.0
+
+# WebSocket Server
+daphne==4.0.0
+
+# Fyers SDK & dependencies
+fyers-apiv3==3.0.0
+
+autobahn==23.6.2
+twisted==22.10.0  # Required by Autobahn
+cryptography==39.0.1  # Downgraded for compatibility
+
+# CORS handling
+django-cors-headers==3.14.0
+
+# Async tools
+aiohttp==3.8.4

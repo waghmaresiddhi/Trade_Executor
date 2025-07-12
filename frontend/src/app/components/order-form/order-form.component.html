@@ -1,0 +1,124 @@
+<div class="order-form-overlay">
+  <div class="order-form-popup">
+
+    <!-- ✅ Final LTP Display -->
+    <div class="ltp-box" *ngIf="ltp !== null; else loadingLTP">
+      LTP: ₹{{ ltp }}
+    </div>
+    <ng-template #loadingLTP>
+      <div class="ltp-box">LTP: --</div>
+    </ng-template>
+
+    <h3>Place New Order</h3>
+
+    <form #orderForm="ngForm" (ngSubmit)="placeOrder()">
+
+      <!-- Symbol and Quantity -->
+      <div class="row two-col">
+        <label>
+          Symbol:
+          <input type="text"
+                 name="symbol"
+                 [(ngModel)]="order.symbol"
+                 (ngModelChange)="onSymbolInput($event)"
+                 required>
+        </label>
+        <label>
+          Quantity:
+          <input type="number"
+                 name="quantity"
+                 [(ngModel)]="order.quantity"
+                 required min="1">
+        </label>
+      </div>
+
+      <!-- Exchange and Validity -->
+      <div class="row two-col">
+        <label>
+          Exchange:
+          <select name="exchange" [(ngModel)]="order.exchange" required>
+            <option value="NSE">NSE</option>
+            <option value="BSE">BSE</option>
+          </select>
+        </label>
+        <label>
+          Validity:
+          <select name="validity" [(ngModel)]="order.validity" required>
+            <option value="DAY">Day</option>
+            <option value="IOC">IOC</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- Order Type -->
+      <div class="row">
+        <label>
+          Order Type:
+          <div class="button-group compact">
+            <button type="button"
+                    [class.active]="order.orderType === 'LIMIT'"
+                    (click)="order.orderType='LIMIT'">Limit</button>
+            <button type="button"
+                    [class.active]="order.orderType === 'MARKET'"
+                    (click)="order.orderType='MARKET'">Market</button>
+            <button type="button"
+                    [class.active]="order.orderType === 'SL'"
+                    (click)="order.orderType='SL'">SL</button>
+          </div>
+        </label>
+      </div>
+
+      <!-- Order Mode -->
+      <div class="row">
+        <label>
+          Order Mode:
+          <div class="button-group compact">
+            <button type="button"
+                    [class.active]="order.orderMode === 'BUY'"
+                    (click)="order.orderMode='BUY'">Buy</button>
+            <button type="button"
+                    [class.active]="order.orderMode === 'SELL'"
+                    (click)="order.orderMode='SELL'">Sell</button>
+          </div>
+        </label>
+      </div>
+
+      <!-- Price and Trigger -->
+      <div class="row two-col" *ngIf="order.orderType !== 'MARKET'">
+        <label>
+          Price:
+          <input type="number"
+                 name="price"
+                 [(ngModel)]="order.price"
+                 [required]="order.orderType === 'LIMIT' || order.orderType === 'SL'">
+        </label>
+        <label *ngIf="order.orderType === 'SL'">
+          Trigger Price:
+          <input type="number"
+                 name="triggerPrice"
+                 [(ngModel)]="order.triggerPrice"
+                 required>
+        </label>
+      </div>
+
+      <!-- Product -->
+      <div class="row">
+        <label>
+          Product:
+          <select name="product" [(ngModel)]="order.product" required>
+            <option value="INTRADAY">Intraday</option>
+            <option value="CNC">Delivery (CNC)</option>
+            <option value="MARGIN">Margin</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- Submit & Close -->
+      <div class="form-actions">
+        <button type="submit" class="submit-button">Place Order</button>
+        <button type="button" class="close-button" (click)="onClose()">Close</button>
+      </div>
+
+    </form>
+  </div>
+</div>

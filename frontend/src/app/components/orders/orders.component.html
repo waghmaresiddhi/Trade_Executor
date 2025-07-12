@@ -1,0 +1,90 @@
+<div class="orders-header">
+  <h2>Orders</h2>
+  <button class="new-button" (click)="openOrderForm()">+ New</button>
+</div>
+
+<!-- Order form popup -->
+<app-order-form 
+  *ngIf="showOrderForm" 
+  (close)="closeOrderForm()" 
+  (orderPlaced)="handleOrderPlaced($event)">
+</app-order-form>
+
+<!-- Orders Table -->
+<div *ngIf="orders.length > 0; else noOrders" class="orders-table-container">
+  <table class="orders-table">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>LTP</th>
+        <th>Qty</th>
+        <th>Type</th>
+        <th>Mode</th>
+        <th>Price</th>
+        <th>Trigger</th>
+        <th>Product</th>
+        <th>Exchange</th>
+        <th>Validity</th>
+        <th>Status</th>
+        <th>Date & Time</th>
+        <th>Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.symbol }}</td>
+
+        <!-- ✅ Live LTP Cell -->
+        <td>
+          <span *ngIf="getLTP(order) !== null">
+            ₹{{ getLTP(order) }}
+          </span>
+          <span *ngIf="getLTP(order) === null">
+            ...
+          </span>
+        </td>
+
+        <td>{{ order.quantity }}</td>
+        <td>{{ order.orderType }}</td>
+        <td>{{ order.orderMode }}</td>
+        <td>{{ order.price || '-' }}</td>
+        <td>{{ order.triggerPrice || '-' }}</td>
+        <td>{{ order.product }}</td>
+        <td>{{ order.exchange }}</td>
+        <td>{{ order.validity }}</td>
+        <td>
+          <span [ngClass]="{
+            'status-success': order.status === 'SUCCESS',
+            'status-failed': order.status === 'FAILED',
+            'status-rejected': order.status === 'REJECTED',
+            'status-error': order.status === 'ERROR'
+          }">
+            {{ order.status }}
+          </span>
+        </td>
+        <td>{{ order.timestamp | date:'short' }}</td>
+        <td>
+  <button class="danger-button" (click)="deleteOrder(order.id)">
+    Delete
+  </button>
+</td>
+
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+
+<!-- No Orders Template -->
+<ng-template #noOrders>
+  <p>No orders yet.</p>
+</ng-template>
+
+<!-- Error and Success Popups -->
+<div *ngIf="errorMessage" class="popup-error">
+  {{ errorMessage }}
+</div>
+<div *ngIf="successMessage" class="popup-success">
+  {{ successMessage }}
+</div>

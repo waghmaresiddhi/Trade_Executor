@@ -1,0 +1,35 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 100vh;
+  background-color: #5986b3;
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  color: white;
+  z-index: 1000;
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      transition: background 0.3s;
+      font: 1.2em sans-serif;
+
+      &:hover {
+        background-color:#0363a3;
+      }
+
+      &.active {
+        background-color: #007acc;
+        font-weight: bold;
+      }
+    }
+  }
+}
